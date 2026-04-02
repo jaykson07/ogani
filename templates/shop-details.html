@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/blog/details/details-pic.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>{{ product.name }}</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{% url 'products:home' %}">Home</a>
+                        <a href="{% url 'products:shop_grid' %}">Shop</a>
+                        <span>{{ product.name }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large" src="{{ product.image_url }}" alt="{{ product.name }}">
+                    </div>
+                    <div class="product__details__pic__slider owl-carousel">
+                        {% for image in product.product_image.all %}
+                        <img data-imgbigurl="{{ image.image.url }}" src="{{ image.image.url }}" alt="{{ product.name }}">
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3>{{ product.name }}</h3>
+                    <div class="product__details__price">UZS {{ product.price }}</div>
+                    <p>{{ product.description }}</p>
+                    <a class="primary-btn add-cart" data-product="{{ product.id }}">ADD TO CART</a>
+                    <a class="heart-icon add-wishlist" data-product="{{ product.id }}"><span class="icon_heart_alt"></span></a>
+                    <ul>
+                        <li><b>Category</b> <span>{{ product.category }}</span></li>
+                        <li><b>Views</b> <span>{{ product.views }}</span></li>
+                        <li><b>Rating</b> <span>{{ product.get_mid_rate|floatformat:1 }}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="related-product pb-5">
+    <div class="container">
+        <div class="section-title related__product__title">
+            <h2>Related Products</h2>
+        </div>
+        <div class="row">
+            {% for related in related_products %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ related.image_url }}"></div>
+                    <div class="product__item__text">
+                        <h6><a href="{% url 'products:shop-details' related.id %}">{{ related.name }}</a></h6>
+                        <h5>UZS {{ related.price }}</h5>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

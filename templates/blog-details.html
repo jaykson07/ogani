@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/blog/details/details-pic.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>{{ post.title }}</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{% url 'products:home' %}">Home</a>
+                        <a href="{% url 'blog:blog' %}">Blog</a>
+                        <span>Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="blog-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-7">
+                <div class="blog__details__text">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                    <h3>{{ post.title }}</h3>
+                    <ul>
+                        <li><i class="fa fa-calendar-o"></i> {{ post.created_at|date:'M d, Y' }}</li>
+                        <li><i class="fa fa-user-o"></i> {{ post.author_name }}</li>
+                    </ul>
+                    <p>{{ post.content }}</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-5">
+                <div class="blog__sidebar">
+                    <div class="blog__sidebar__item">
+                        <h4>Recent News</h4>
+                        <div class="blog__sidebar__recent">
+                            {% for item in last_3_posts %}
+                            <a href="{% url 'blog:blog-details' item.id %}" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="{{ item.image.url }}" alt="{{ item.title }}" style="width: 70px; height: 70px; object-fit: cover;">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h6>{{ item.title|truncatechars:50 }}</h6>
+                                    <span>{{ item.created_at|date:'M d, Y' }}</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Tags</h4>
+                        <div class="blog__sidebar__item__tags">
+                            {% for tag in tags %}
+                            <a href="{% url 'blog:blog' %}?tag={{ tag.tag|urlencode }}">{{ tag.tag }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
